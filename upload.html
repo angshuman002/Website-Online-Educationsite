@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Upload | NoteKit</title>
+	<link rel="shortcut icon" href="websiteicon.jpg" >
+	<link rel="stylesheet" href="layout.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
+<body class="bodyimg">
+
+<center>
+<div class="formpage3">
+
+
+<center>
+	<p class="fieldname"> Name of Book</p><br>
+	<input id="mybookname" class="inputfield" type="text" name="" maxlength="15" placeholder="Ex-facebook"><hr style="background-color: white;width: 80%;height:1px;border: none;">
+
+
+	<p class="fieldname"> Name of Publisher</p><br>
+	<input id="mypublishername" class="inputfield" type="text" name="" maxlength="15" placeholder="Ex-facebook Ltd"><hr style="background-color: white;width: 80%;height:1px;border: none;">
+
+
+    <p class="fieldname">Choose Category</p><br>
+	<select id="mycategory" class="inputfield2">
+			<option class="inputfield2" >science</option>
+			<option class="inputfield2" >Arts</option>
+			<option class="inputfield2"  >commerce</option>
+	</select><hr style="background-color: white;width: 80%;height:1px;border: none;">
+     
+     <p class="fieldname"> Upload file</p><br>
+	<input id="myfile" class="inputfield" type="file" multiple=""  name="myfile" maxlength="15" placeholder="Ex-facebook Ltd" style="padding-top:20px;" ><hr style="background-color: white;width: 80%;height:1px;border: none;">
+    
+
+
+    <script type="text/javascript">
+     myfile.addEventListener('change',function(e){
+     	for(let i=0;i<e.target.files.length; i++){
+     		let mypdffile=e.target.files[i];
+
+     		let storageref=firebase.storage().ref("Files/"+mypdffile.name);
+     		let task=storageref.put(mypdffile);
+
+     		task.on('state_changed',function progress(snapshot){
+
+                 let percentage=snapshot.bytesTransferred/snapshot.totalBytes*100;
+                 console.log("Upload is"+percentage+"%done");
+                 switch(snapshot.state){
+                 	case firebase.storage.TaskState.PAUSED:
+                 	   console.log("Uploading is paused");
+                 	   break;
+                 	case firebase.storage.TaskState.RUNNING:
+                 	   console.log("Uploading is Running");
+                 	   break;   
+                 }
+
+     		})
+     	}
+     })	
+
+   
+
+
+
+
+
+
+
+    </script>
+
+   
+
+
+
+    <p class="fieldname">Description</p><br>
+    <textarea id="mydescription" class="inputfield1" rows="5" cols="20" maxlength="450" ></textarea>
+    <hr style="background-color: white;width: 80%;height:1px;border: none;">
+    
+    <input type="submit" class="uploadicon1" name="" onclick="myuploads();">
+    
+
+
+
+</center>
+
+
+</div>
+</center>
+
+<script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-database.js"></script>
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBPWwaObLNVth3snpt6qfELG_QXKWkG2Pc",
+    authDomain: "notekit-5d2c1.firebaseapp.com",
+    databaseURL: "https://notekit-5d2c1.firebaseio.com",
+    projectId: "notekit-5d2c1",
+    storageBucket: "gs://notekit-5d2c1.appspot.com/",
+    messagingSenderId: "564242574358",
+    appId: "1:564242574358:web:69f2b3a9b9aa0d88"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+
+<script type="text/javascript">
+	
+	var uid, uploadRef, database = firebase.database();
+
+	function myuploads(){
+		var a=document.getElementById("mybookname").value;
+		var b=document.getElementById("mypublishername").value;
+		var c=document.getElementById("mycategory").value;
+		var d=document.getElementById("myfile").value;
+		var e=document.getElementById("mydescription").value;
+		
+		if(a==""){
+			alert("Please enter your book name");
+		}
+		
+		else if(b==""){
+			alert("Please enter your name");
+		}
+		else if(c==""){
+			alert("Please enter your cateogry");
+		}
+		else if(d==""){
+			alert("Please Upload your file");
+		}
+		
+		else if(e==""){
+			alert("Please give description about your file");
+		}
+		else{
+			alert("thank you for Uploading...");
+			uploadRef.push({
+  				"bookname":a,
+  				"category":c,
+  				"publisher":b,
+  				"description":e
+  			}).then(function () {
+  				console.log("Data Registered..")
+  				window.location.href = "./index.html"
+  			}).catch(function (error) {
+  				console.log(error)
+  			})
+		}
+	}
+
+
+	firebase.auth().onAuthStateChanged(function(user) {
+  	if (user) {
+      // alert("Signed In")
+  		console.log(user)
+
+  		uid = user.uid
+  		uploadRef = database.ref("data/")
+
+  	} else {
+  		console.log("signed out")
+  		window.location.href = "./signin.html"
+  	}
+});
+
+</script>
+
+
+
+</body>
+</html>

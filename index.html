@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>APEX Store</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="shortcut icon" href="websiteicon.jpg" >
+	<link rel="stylesheet" href="layout.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
+<body style="background-color: black;">
+<header>
+	<!--<div class="homeicon1"></div>-->
+	
+	<center>
+	<ul>
+	    <!--<li><button onclick="filter('apps')" class="appbt">Apps</button></li>
+	    <li><button onclick="filter('gamess')" class="gamebt">Gamess</button></li>
+	    <li><button onclick="filter('softwaress')" class="softbt">Softwares</button></li>-->
+	    <li><a href="upload.html"><img class="uploadicon" src="upload.png"></a></li>
+	    <li><button id="log-out" class="logbt"></button></li>
+	</ul>
+	<hr class="divider">
+	</center>
+    <!--<a href=""><img class="mailing" src="mail.png"></a>-->
+	<!--<hr class="divider3">-->
+</header>
+
+<div class="boddy">
+	<div id="blocks">
+		<!-- <div class="pdfbox">
+			<h2 class="content-name">Content Name</h2>	    
+			<div class="desc">Description Description Description Description Description Description Description </div> <br>
+			<div class="user">User Name</div> <br>	    
+			<div class="type">User Type</div> <br>	
+			<button class="read-btn button">Read</button>    
+			<button class="download btn-button">Download</button>    
+		</div> -->
+	</div>
+</div>
+
+
+
+
+<!--modal1-->
+<center>
+<div id="id01" class="modal">
+	<center>
+  <span  onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+  </center>
+  
+</div>
+</center>
+
+
+
+
+<hr class="divider2">
+<footer style="z-index:1;">
+	<center>
+		<ul class="footertext">
+			<li><button onclick="document.getElementById('id01').style.display='block'" style="border: none;height:40px;width:150px;margin:0px;border-radius:20px;color:brown; font-size:17px; text-align: center;background-color:yellow;font-weight:bolder;font-family: 'Roboto', sans-serif;">About Us</button></li>
+			<li><button onclick="document.getElementById('id02').style.display='block'" style="border: none;height:40px;width:150px;margin:0px;border-radius:20px;color:brown; font-size:17px; text-align: center;background-color:yellow;font-weight:bolder;font-family: 'Roboto', sans-serif;font-family: 'Roboto', sans-serif;">Contact</button></li>
+			<li><button onclick="document.getElementById('id03').style.display='block'" style="border: none;height:40px;width:150px;margin:0px;border-radius:20px;color:brown; font-size:17px; text-align: center;background-color:yellow;font-weight:bolder;font-family: 'Roboto', sans-serif;font-family: 'Roboto', sans-serif;font-family: 'Roboto', sans-serif;">Work</button></li>
+	
+			<li><button onclick="document.getElementById('id04').style.display='block'" style="border: none;height:40px;width:150px;margin:0px;border-radius:20px;color:brown; font-size:17px; text-align: center;background-color:yellow;font-weight:bolder;font-family: 'Roboto', sans-serif;">Team</button></li>
+		</ul>
+
+		<div class="searchbox1">
+			<input class="input_box" style="color: black;" type="text" name="" placeholder="Email" id="sub" required="Email">
+			<button style="background-color: red;color: white;border: none;border-radius:10px;height: 100%;width:85px;font-family: 'Roboto', sans-serif;">Subscribe</button>
+        </div>
+
+		<ul class="socialicon">
+			<li><a  href="https://www.facebook.com"><img class="footerimg" src="facebook.png"></a></li>
+			<li><a  href="https://www.instagram.com"><img class="footerimg" src="instagram.png"></a></li>
+			<li><a  href="https://www.twitter.com"><img class="footerimg" src="twitter.png"></a></li>
+			<li><a  href="https://www.youtube.com"><img class="footerimg" src="youtube.png"></a></li>
+		</ul>
+		<hr class="divider">
+		<p style="font-size:20px;font-family:'Roboto', sans-serif;margin-bottom:10px;">© Copyright 2019 Free  - All Rights Reserved</p>
+	</center>
+</footer>
+
+<script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-database.js"></script>
+<script>
+  var firebaseConfig = {
+    apiKey: "AIzaSyBPWwaObLNVth3snpt6qfELG_QXKWkG2Pc",
+    authDomain: "notekit-5d2c1.firebaseapp.com",
+    databaseURL: "https://notekit-5d2c1.firebaseio.com",
+    projectId: "notekit-5d2c1",
+    storageBucket: "gs://notekit-5d2c1.appspot.com/",
+    messagingSenderId: "564242574358",
+    appId: "1:564242574358:web:69f2b3a9b9aa0d88"
+  };
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+<script type="text/javascript">
+	document.querySelector("#log-out").addEventListener("click", function () {
+		firebase.auth().signOut()
+	})
+
+	firebase.auth().onAuthStateChanged(function(user) {
+  		if (user) {
+  			console.log("Signed In")
+
+  			var ref = firebase.database().ref("/data").once("value", function (snap) {
+				if (snap.exists()) {
+					snap = snap.val()
+  					for (let i in snap) {
+  						var data = snap[i]
+  						console.log(data)
+  						document.querySelector("#blocks").innerHTML += '<div class="pdfbox"><h2 class="content-name">' + data.bookname + '</h2><div class="desc">' + data.description + '</div><br><div class="user">' + data.publisher + '</div><br><div class="type">' + data.category + '</div><br><a href="https://firebasestorage.googleapis.com/v0/b/notekit-5d2c1.appspot.com/o/Files%2F'+data.bookname+'?alt=media&token=9d9555de-881c-4b25-adcb-1ee252c461e7" class="read-btn button" style="border:none;border-radius:10px;width:50%;height:80%;background-image:linear-gradient(to left, green,yellow,green);color:#615423;font-size:20px;font-weight: bolder;">Read</a></div>';
+  					}
+				} else {
+					console.log("No Data Yet..")
+				}
+  				
+  			})
+
+
+  		} else {
+  			window.location.replace("./signin.html")
+  		}
+	});
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sign-Up | NoteKit</title>
+	<link rel="shortcut icon" href="websiteicon.jpg" >
+	<link rel="stylesheet" href="layout.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
+<body class="bodyimg">
+
+<center>
+<div class="formpage1">
+
+
+<center>
+	<p class="fieldname">Full Name</p><br>
+	<input class="inputfield" type="text" name="" maxlength="25" placeholder="Full Name" id="name"><hr style="background-color: white;width: 80%;height:1px;border: none;">
+
+
+	<p class="fieldname"> Email </p><br>
+	<input class="inputfield" type="email" name="" maxlength="25" placeholder="Email" id="email"><hr style="background-color: white;width: 80%;height:1px;border: none;">
+     
+     <p class="fieldname">Password</p><br>
+	<input class="inputfield" type="text" name="" maxlength="25" placeholder="Password" id="password"><hr style="background-color: white;width: 80%;height:1px;border: none;">
+
+	<p class="fieldname">Conform Password</p><br>
+	<input class="inputfield" type="password" name="" maxlength="25" placeholder="Conform Password" id="conpassword"><hr style="background-color: white;width: 80%;height:1px;border: none;">
+
+    <p class="fieldname">Choose Category</p><br>
+	<select class="inputfield2" id="Category">
+			<option class="inputfield2" >student</option>
+			<option class="inputfield2" >teacher</option>
+			<option class="inputfield2"  >others</option>
+	</select><hr style="background-color: white;width: 80%;height:1px;border: none;">
+
+    <p class="fieldname">Your Bio</p><br>
+    <textarea class="inputfield1" rows="5" cols="20" maxlength="450" id="bio"></textarea>
+    <hr style="background-color:white;width: 80%;height:1px;border: none;"><br>
+    
+    <input type="submit" class="mysignupbt"  name="Register" onclick="Myfun()">
+
+</center>
+
+
+</div>
+</cenwhite>
+
+</body>
+
+<script src="https://www.gstatic.com/firebasejs/6.3.2/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-auth.js"></script>
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBPWwaObLNVth3snpt6qfELG_QXKWkG2Pc",
+    authDomain: "notekit-5d2c1.firebaseapp.com",
+    databaseURL: "https://notekit-5d2c1.firebaseio.com",
+    projectId: "notekit-5d2c1",
+    storageBucket: "",
+    messagingSenderId: "564242574358",
+    appId: "1:564242574358:web:69f2b3a9b9aa0d88"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+
+<script type="text/javascript">
+
+
+firebase.auth().onAuthStateChanged(function(user) {
+  	if (user) {
+      // alert("Signed In")
+  		console.log(user)
+
+  	} else {
+  		console.log("signed out")
+  	}
+});
+
+	function Myfun(){
+	var a=document.getElementById("name").value;
+var b=document.getElementById("email").value;
+var c=document.getElementById("password").value;
+var d=document.getElementById("conpassword").value;
+var e=document.getElementById("Category").value;
+var f=document.getElementById("bio").value;
+
+
+if(a==""){
+	alert("Please enter your name");
+}
+
+else if(b==""){
+	alert("Please enter your email");
+}
+else if(c==""){
+	alert("Please enter your password");
+}
+else if(d==""){
+	alert("Please confirm your password");
+}
+
+else if(c!=d){
+	alert("Password does not match with Confirm Password");
+}
+else if(e==""){
+	alert("Please Select your cateogry");
+}
+else if(f==""){
+	alert("Please Enter your Bio");
+}
+
+else{
+	alert("thank you");
+
+firebase.auth().createUserWithEmailAndPassword(b, d)
+.then(function() {
+  console.log("Uploading..")
+	firebase.database().ref('users/').push({
+    	"name":a,
+    	"Cateogry":e,
+    	"bio":f
+  	}).then(function () {
+  		console.log("Data Registered..")
+      window.location.replace("./index.html")
+  	}) 
+})
+.catch(function(error) {
+  // Handle Errors here.
+  var errorCode = error.code;
+  var errorMessage = error.message;
+  console.log(errorCode + errorMessage)
+  // ...
+});
+
+
+}
+}
+</script>
+</html>

@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Sign-In | NoteKit</title>
+	<link rel="shortcut icon" href="websiteicon.jpg" >
+	<link rel="stylesheet" href="layout.css">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0">
+</head>
+<body class="bodyimg">
+
+<center>
+<div class="formpage">
+
+<!-- <form>
+ --><center>
+ 		
+
+	<p class="fieldname">User Email ID</p><br>
+	<input id="email" class="inputfield" type="email" name="" maxlength="25" placeholder="Email"><hr style="background-color: white;width: 80%;height:1px;border: none;">
+
+
+	<p class="fieldname">User Password</p><br>
+	<input id="pass" class="inputfield" type="text" name="" maxlength="25" placeholder="Password"><hr style="background-color: white;width: 80%;height:1px;border: none;">
+    <center>
+    <ul style="list-style: none;">
+    	<li><button id="e-auth" class="mysigninbt"></button></li>
+    	<li><button id="sign-up" class="mysignupbt"></button></li>
+    </ul>
+	</center>
+     
+</center>
+<!-- </form>
+ -->
+</div>
+</center>
+
+<script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/6.3.3/firebase-auth.js"></script>
+<script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyBPWwaObLNVth3snpt6qfELG_QXKWkG2Pc",
+    authDomain: "notekit-5d2c1.firebaseapp.com",
+    databaseURL: "https://notekit-5d2c1.firebaseio.com",
+    projectId: "notekit-5d2c1",
+    storageBucket: "",
+    messagingSenderId: "564242574358",
+    appId: "1:564242574358:web:69f2b3a9b9aa0d88"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+</script>
+
+<script type="text/javascript">
+
+	document.querySelector("#sign-up").addEventListener("click", function () {
+		window.location.href = "./signup.html"
+	})
+
+	document.querySelector("#e-auth").addEventListener("click", function () {
+		var email = document.querySelector("#email").value
+		var password = document.querySelector("#pass").value
+		firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+  			// Handle Errors here.
+  			var errorCode = error.code;
+  			var errorMessage = error.message;
+  			console.log(errorCode + errorMessage)
+  			alert("Invalid Input")
+  			// ...
+		});
+	})
+
+	firebase.auth().onAuthStateChanged(function(user) {
+  		if (user) {
+  			window.location.replace("./index.html")
+  		  // User is signed in.
+  		} else {
+  			console.log("Signed Out")
+  		  // No user is signed in.
+  		}
+	});
+</script>
+
+</body>
+</html>
